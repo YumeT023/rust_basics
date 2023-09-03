@@ -2,10 +2,10 @@ use crate::ast::{PropField, Query, Symbol};
 use crate::error::Error;
 use crate::lexer::{Token, TokenKind};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug)]
 pub struct Parser<'a, T>
   where
-    T: Iterator<Item=Token<'a>> + Clone
+    T: Iterator<Item=Token<'a>>
 {
   pub tokens: T,
   // Use two token cursor for backtracking and to avoid cloning 'tokens' iterator
@@ -15,7 +15,7 @@ pub struct Parser<'a, T>
 
 impl<'a, T> Parser<'a, T>
   where
-    T: Iterator<Item=Token<'a>> + Clone
+    T: Iterator<Item=Token<'a>>
 {
   pub fn new(input: T) -> Self {
     let mut p = Parser {

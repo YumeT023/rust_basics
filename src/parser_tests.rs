@@ -1,27 +1,11 @@
 #[cfg(test)]
 mod tests {
   use crate::error::Error;
-  use crate::lexer::{Token, TokenKind};
   use crate::parser::Parser;
   use crate::ast::{PropField, Query, Symbol};
+  use crate::test_common::{coma, l_curly, r_curly, symbol};
 
-  fn symbol(name: &'static str) -> Token<'static> {
-    Token::new(TokenKind::Symbol, name)
-  }
-
-  fn l_curly() -> Token<'static> {
-    Token::new(TokenKind::LCurly, "{")
-  }
-
-  fn r_curly() -> Token<'static> {
-    Token::new(TokenKind::RCurly, "}")
-  }
-
-  fn coma() -> Token<'static> {
-    Token::new(TokenKind::Coma, ",")
-  }
-
-  fn ast_symbol(name: &'static str) -> Symbol {
+  pub fn ast_symbol(name: &'static str) -> Symbol {
     Symbol::from(symbol(name))
   }
 

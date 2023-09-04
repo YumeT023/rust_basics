@@ -9,6 +9,8 @@ pub enum TokenKind {
 }
 
 #[derive(Debug, Clone, Copy)]
+// here, lifetime 'a means, if the token is dropped (cleaned from the stack), the 'str_val' will
+// also be dropped
 pub struct Token<'a> {
   pub kind: TokenKind,
   pub str_val: &'a str,

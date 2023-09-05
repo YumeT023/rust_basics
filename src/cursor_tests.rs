@@ -6,6 +6,7 @@ mod tests {
   fn create_cursor_with_given_input() {
     let source = "lexer source";
     assert_eq!(Cursor::new(source), Cursor {
+      chars: source.chars(),
       source,
       c0: 0,
       c1: 0,
@@ -38,5 +39,23 @@ mod tests {
     assert_eq!(cursor.current_tok_len(), 4);
 
     assert!(cursor.is_eof());
+  }
+
+  #[test]
+  fn take_char_while() {
+    let source = "   symbol   ";
+    let mut cursor = Cursor::new(source);
+
+    cursor.stretch_while(|c| c.is_whitespace());
+    assert_eq!(cursor.current_tok_len(), 3);
+    cursor.done_current_tok();
+
+    cursor.stretch_while(|c| c.is_alphabetic());
+    assert_eq!(cursor.current_tok_val(), "symbol");
+    cursor.done_current_tok();
+
+    cursor.stretch_while(|c| c.is_whitespace());
+    assert_eq!(cursor.current_tok_len(), 3);
+    cursor.done_current_tok();
   }
 }

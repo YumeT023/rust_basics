@@ -28,7 +28,7 @@ mod tests {
     assert_eq!(cursor.current_tok_len(), 2);
 
     // Moves to next tok
-    cursor.done_current_tok();
+    cursor.reset_current_tok();
     assert_eq!(cursor.current_tok_span(), (2, /* none */ "", 2));
     assert_eq!(cursor.current_tok_len(), 0);
     cursor.stretch(); // "r"
@@ -48,14 +48,14 @@ mod tests {
 
     cursor.stretch_while(|c| c.is_whitespace());
     assert_eq!(cursor.current_tok_len(), 3);
-    cursor.done_current_tok();
+    cursor.reset_current_tok();
 
     cursor.stretch_while(|c| c.is_alphabetic());
     assert_eq!(cursor.current_tok_val(), "symbol");
-    cursor.done_current_tok();
+    cursor.reset_current_tok();
 
     cursor.stretch_while(|c| c.is_whitespace());
     assert_eq!(cursor.current_tok_len(), 3);
-    cursor.done_current_tok();
+    cursor.reset_current_tok();
   }
 }

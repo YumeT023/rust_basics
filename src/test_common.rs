@@ -16,4 +16,6 @@ pub fn coma() -> Token<'static> {
   Token::new(TokenKind::Coma, ",")
 }
 
-
+pub fn assert_eq_opt<T: PartialEq>(left: Option<T>, right: T) {
+  assert!(left.is_some_and(|t| t == right))
+}

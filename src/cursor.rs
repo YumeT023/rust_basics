@@ -28,18 +28,23 @@ impl<'a> Cursor<'a> {
     }
   }
 
+  pub fn peek(&self) -> char {
+    self.chars.clone().next().unwrap_or(0 as char)
+  }
+
   pub fn stretch(&mut self) {
+    self.chars.next();
     self.c1 += 1;
   }
 
   pub fn stretch_while(&mut self, f: impl Fn(char) -> bool) {
-    let init_len = self.chars.as_str().len();
     let mut chars = self.chars.clone();
-    while chars.next().is_some_and(|c| f(c)) { self.chars.next(); }
-    self.c1 += init_len - self.chars.as_str().len();
+    while chars.next().is_some_and(|c| f(c)) {
+      self.stretch();
+    }
   }
 
-  pub fn done_current_tok(&mut self) {
+  pub fn reset_current_tok(&mut self) {
     self.c0 = self.c1;
   }
 
@@ -53,6 +58,10 @@ impl<'a> Cursor<'a> {
 
   pub fn current_tok_val(&self) -> &str {
     &self.source[self.c0..self.c0 + self.current_tok_len() as usize]
+  }
+
+  pub fn current_tok_char(&self) -> Option<char> {
+    self.current_tok_val().chars().last()
   }
 
   pub fn is_eof(&self) -> bool {

@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
-  use crate::error::Error;
-  use crate::parser::Parser;
   use crate::ast::{PropField, Query, Symbol};
+  use crate::error::Error;
+  use crate::parser::{parse, Parser};
   use crate::test_common::{coma, l_curly, r_curly, symbol};
 
   pub fn ast_symbol(name: &'static str) -> Symbol {
@@ -64,6 +64,22 @@ mod tests {
 
     let mut parser = Parser::new(query_with_symbol_field);
     let query = parser.parse_query()?;
+
+    assert_eq!(query.symbol, ast_symbol("sym"));
+    assert_eq!(query.fields.len(), 2);
+    assert_eq!(query.fields[0], PropField::Query(Query::new(ast_symbol("nested_sym"), vec![
+      PropField::Symbol(ast_symbol("n_field0")),
+      PropField::Symbol(ast_symbol("n_field1")),
+    ])));
+    assert_eq!(query.fields[1], PropField::Symbol(ast_symbol("field0")));
+    Ok(())
+  }
+
+  #[test]
+  fn parse_source() -> Result<(), Error> {
+    let source = "sym { nested_sym { n_field0, n_field1 }, field0,}";
+
+    let query = parse(source)?;
 
     assert_eq!(query.symbol, ast_symbol("sym"));
     assert_eq!(query.fields.len(), 2);

@@ -48,6 +48,7 @@ impl<'a> Lexer<'a> {
         '{' => TokenKind::LCurly,
         '}' => TokenKind::RCurly,
         ',' => TokenKind::Coma,
+        c if c.is_whitespace() => return self.next_tok(), // ws : _ -> skip
         c if is_symbol_start(c) => self.symbol(),
         _ => TokenKind::Eof
       },

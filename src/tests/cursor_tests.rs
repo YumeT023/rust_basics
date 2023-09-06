@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-  use crate::cursor::Cursor;
+  use crate::lexer::cursor::Cursor;
   use crate::lexer::Span;
 
   #[test]

@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests {
-  use crate::ast::{PropField, Query, Symbol};
   use crate::error::Error;
   use crate::lexer::Span;
+  use crate::parser::ast::{PropField, Query, Symbol};
   use crate::parser::{parse, Parser};
-  use crate::test_common::{coma, l_curly, r_curly, symbol};
+  use crate::tests::util::{coma, l_curly, r_curly, symbol};
 
   pub fn ast_symbol(name: &'static str, span: Span) -> Symbol {
     Symbol::from(symbol(name, span))

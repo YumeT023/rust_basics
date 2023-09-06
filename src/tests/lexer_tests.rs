@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
   use crate::lexer::{Lexer, Span, tokenize};
-  use crate::test_common::{assert_eq_opt, coma, l_curly, r_curly, symbol};
+  use crate::tests::util::{assert_eq_opt, coma, l_curly, r_curly, symbol};
 
   #[test]
   fn lex_token_one_by_one() {

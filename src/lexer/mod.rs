@@ -1,4 +1,6 @@
-use crate::cursor::Cursor;
+use crate::lexer::cursor::Cursor;
+
+pub mod cursor;
 
 #[derive(Debug, PartialOrd, PartialEq, Copy, Clone)]
 pub enum TokenKind {

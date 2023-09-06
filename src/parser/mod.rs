@@ -1,6 +1,8 @@
-use crate::ast::{PropField, Query, Symbol};
 use crate::error::Error;
 use crate::lexer::{Token, tokenize, TokenKind};
+use crate::parser::ast::{PropField, Query, Symbol};
+
+pub mod ast;
 
 #[derive(Debug)]
 // the tokens in the iterator will be dropped with this Parser

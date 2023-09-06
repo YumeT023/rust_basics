@@ -1,5 +1,4 @@
 use std::fmt::Debug;
-
 use crate::lexer::{Span, Token, TokenKind};
 
 pub fn symbol(name: &'static str, span: Span) -> Token<'static> {

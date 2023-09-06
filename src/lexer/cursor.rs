@@ -1,5 +1,4 @@
 use std::str::Chars;
-
 use crate::lexer::Span;
 
 #[derive(Debug)]

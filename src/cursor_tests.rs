@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
   use crate::cursor::Cursor;
+  use crate::lexer::Span;
 
   #[test]
   fn create_cursor_with_given_input() {
@@ -20,22 +21,22 @@ mod tests {
 
     assert!(!cursor.is_eof());
 
-    assert_eq!(cursor.current_tok_span(), (0, /* none */ "", 0));
+    assert_eq!(cursor.current_tok_span(), (Span::new(0, 0), /* none */ ""));
     assert_eq!(cursor.current_tok_len(), 0);
     cursor.stretch(); // "c"
     cursor.stretch(); // "cu"
-    assert_eq!(cursor.current_tok_span(), (0, "cu", 2));
+    assert_eq!(cursor.current_tok_span(), (Span::new(0, 2), "cu"));
     assert_eq!(cursor.current_tok_len(), 2);
 
     // Moves to next tok
     cursor.reset_current_tok();
-    assert_eq!(cursor.current_tok_span(), (2, /* none */ "", 2));
+    assert_eq!(cursor.current_tok_span(), (Span::new(2, 2), /* none */ ""));
     assert_eq!(cursor.current_tok_len(), 0);
     cursor.stretch(); // "r"
     cursor.stretch(); // "rs"
     cursor.stretch(); // "rso"
     cursor.stretch(); // "rsor"
-    assert_eq!(cursor.current_tok_span(), (2, "rsor", 6));
+    assert_eq!(cursor.current_tok_span(), (Span::new(2, 6), "rsor"));
     assert_eq!(cursor.current_tok_len(), 4);
 
     assert!(cursor.is_eof());

@@ -11,18 +11,44 @@ pub enum TokenKind {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Span {
+  pub start: usize,
+  pub end: usize,
+}
+
+impl Default for Span {
+  fn default() -> Self {
+    Span {
+      start: 0,
+      end: 0,
+    }
+  }
+}
+
+impl Span {
+  pub fn new(start: usize, end: usize) -> Self {
+    Span {
+      start,
+      end,
+    }
+  }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 // here, lifetime 'a means, if the token is dropped (cleaned from the stack), the 'str_val' will
 // also be dropped
 pub struct Token<'a> {
   pub kind: TokenKind,
   pub str_val: &'a str,
+  pub span: Span,
 }
 
 impl<'a> Token<'a> {
-  pub fn new(kind: TokenKind, val: &'a str) -> Self {
+  pub fn new(kind: TokenKind, val: &'a str, span: Span) -> Self {
     Token {
       kind,
       str_val: val,
+      span,
     }
   }
 }
@@ -54,7 +80,8 @@ impl<'a> Lexer<'a> {
       },
       _ => return None
     };
-    Some(Token::new(kind, self.cur.current_tok_val()))
+    let (span, str_val) = self.cur.current_tok_span();
+    Some(Token::new(kind, str_val, span))
   }
 
   pub fn symbol(&mut self) -> TokenKind {

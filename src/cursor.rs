@@ -1,5 +1,7 @@
 use std::str::Chars;
 
+use crate::lexer::Span;
+
 #[derive(Debug)]
 pub struct Cursor<'a> {
   pub chars: Chars<'a>,
@@ -52,8 +54,8 @@ impl<'a> Cursor<'a> {
     (self.c1 - self.c0) as u32
   }
 
-  pub fn current_tok_span(&self) -> (usize, &str, usize) {
-    (self.c0, self.current_tok_val(), self.c1)
+  pub fn current_tok_span(&self) -> (Span, &'a str) {
+    (Span::new(self.c0, self.c1), self.current_tok_val())
   }
 
   pub fn current_tok_val(&self) -> &'a str {

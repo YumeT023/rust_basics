@@ -39,7 +39,7 @@ impl<'a> Lexer<'a> {
     }
   }
 
-  pub fn lex(&mut self) -> Option<Token> {
+  pub fn next_tok(&mut self) -> Option<Token<'a>> {
     // Ensures there is no current_tok yet
     self.cur.reset_current_tok();
     self.cur.stretch();
@@ -49,18 +49,30 @@ impl<'a> Lexer<'a> {
         '}' => TokenKind::RCurly,
         ',' => TokenKind::Coma,
         c if is_symbol_start(c) => self.symbol(),
-        _ => return None
+        _ => TokenKind::Eof
       },
-      _ => TokenKind::Eof
+      _ => return None
     };
-    let t = Token::new(kind, self.cur.current_tok_val());
-    Some(t)
+    Some(Token::new(kind, self.cur.current_tok_val()))
   }
 
   pub fn symbol(&mut self) -> TokenKind {
     self.cur.stretch_while(|c| is_symbol_continue(c));
     TokenKind::Symbol
   }
+}
+
+pub fn tokenize(source: &str) -> Vec<Token> {
+  let mut tokens = vec![];
+  let mut lexer = Lexer::new(source);
+
+  while let Some(t) = lexer.next_tok() {
+    tokens.push(t);
+    if t.kind == TokenKind::Eof {
+      break;
+    }
+  }
+  tokens
 }
 
 pub fn is_symbol_start(c: char) -> bool {

@@ -56,8 +56,8 @@ impl<'a> Cursor<'a> {
     (self.c0, self.current_tok_val(), self.c1)
   }
 
-  pub fn current_tok_val(&self) -> &str {
-    &self.source[self.c0..self.c0 + self.current_tok_len() as usize]
+  pub fn current_tok_val(&self) -> &'a str {
+    self.source.get(self.c0..self.c0 + self.current_tok_len() as usize).unwrap_or("")
   }
 
   pub fn current_tok_char(&self) -> Option<char> {
